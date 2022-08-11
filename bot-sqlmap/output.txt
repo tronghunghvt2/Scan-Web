@@ -1,7 +1,8 @@
-query:sqlmap -u https://0a25009a04ff0561c009907600eb0072.web-security-academy.net/filter?category=Accessories --batch
-time_starting:00:20:36
-vul:b
-vul:t
+time_starting:00:01:44
+vul:B
+vul:S
+vul:T
 vul:U
 dbs:public
-time_ending:00:20:46
+table:product
+time_ending:00:02:00
