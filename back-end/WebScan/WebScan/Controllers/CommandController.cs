@@ -36,5 +36,38 @@ namespace WebScan.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpPost]
+        public IActionResult PostCommand(Models.Command command) 
+        {
+            try
+            {
+                if (command.idType == 1)
+                {
+                    var nmapScan = new NmapScan();
+                    nmapScan.ipAddress = command.value;
+                    return Ok(new
+                    {
+                        Sucess = true,
+                        Data = nmapScan
+                    });
+                }
+                else if (command.idType == 2)
+                {
+                    var sqlmapScan = new SqlmapScan();
+                    sqlmapScan.value = command.value;
+                    return Ok(new
+                    {
+                        Sucess = true,
+                        Data = sqlmapScan
+                    });
+                }
+            }
+            catch
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
     }
 }
