@@ -10,6 +10,7 @@ namespace WebScan.Data
         public DbSet<Command> Commands { get; set; }
         public DbSet<ScanType> ScanTypes { get; set; }
         public DbSet<SqlmapScan> SqlmapScans { get; set; }
+        public DbSet<NmapScan> NmapScans { get; set; }
         public DbSet<Vulnerability> Vulnerabilities { get; set; }
         public DbSet<Database> Databases { get; set; }
         public DbSet<Table> Tables { get; set; }

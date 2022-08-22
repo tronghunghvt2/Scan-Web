@@ -19,19 +19,40 @@ namespace WebScan.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var dsCommand = _context.Commands.ToList();
-            return Ok(dsCommand);
+            try
+            {
+                var dsCommand = _context.Commands.ToList();
+                if(dsCommand == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return Ok(dsCommand);
+                }
+                
+            }catch
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet("{idTypeScan}")]
         public IActionResult GetById(int idTypeScan)
         {
-            var dsCommand = _context.Commands.Where(cm => cm.idType == idTypeScan);
-            if(dsCommand != null)
+            try
             {
-                return Ok(dsCommand);
-            }
-            else
+                var dsCommand = _context.Commands.Where(cm => cm.idType == idTypeScan);
+                if (dsCommand != null)
+                {
+                    return Ok(dsCommand);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            } 
+            catch
             {
                 return BadRequest();
             }
