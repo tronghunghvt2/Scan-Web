@@ -10,7 +10,7 @@ namespace WebScan.Models
         public long? idType { get; set; }
     }
 
-    public class HistoryNmap :History
+    public class HistoryNmap : History
     {
         
         public string timeStart { get; set; }

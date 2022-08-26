@@ -3,5 +3,10 @@
   <PropertyGroup>
     <Controller_SelectedScaffolderID>ApiControllerEmptyScaffolder</Controller_SelectedScaffolderID>
     <Controller_SelectedScaffolderCategoryPath>root/Common/Api</Controller_SelectedScaffolderCategoryPath>
+    <ActiveDebugProfile>IIS Express</ActiveDebugProfile>
+    <NameOfLastUsedPublishProfile>C:\Users\Admin\Downloads\Scan-Web-master\back-end\WebScan\WebScan\Properties\PublishProfiles\deploywebIP.pubxml</NameOfLastUsedPublishProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

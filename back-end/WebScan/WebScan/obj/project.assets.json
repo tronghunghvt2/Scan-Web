@@ -5884,19 +5884,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ADMIN\\.nuget\\packages\\": {}
+    "C:\\Users\\Admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ADMIN\\Desktop\\Scan-Web\\back-end\\WebScan\\WebScan\\WebScan.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Downloads\\Scan-Web-master\\back-end\\WebScan\\WebScan\\WebScan.csproj",
       "projectName": "WebScan",
-      "projectPath": "C:\\Users\\ADMIN\\Desktop\\Scan-Web\\back-end\\WebScan\\WebScan\\WebScan.csproj",
-      "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ADMIN\\Desktop\\Scan-Web\\back-end\\WebScan\\WebScan\\obj\\",
+      "projectPath": "C:\\Users\\Admin\\Downloads\\Scan-Web-master\\back-end\\WebScan\\WebScan\\WebScan.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Admin\\Downloads\\Scan-Web-master\\back-end\\WebScan\\WebScan\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

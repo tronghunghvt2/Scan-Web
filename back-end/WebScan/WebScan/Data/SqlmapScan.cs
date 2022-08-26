@@ -7,6 +7,8 @@ namespace WebScan.Data
     [Table("sqlmapScan")]
     public class SqlmapScan
     {
+        internal int idType;
+
         [Key]
         public long idSqlmapScan { get; set; }
         [Required]
