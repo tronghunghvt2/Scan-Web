@@ -1,8 +1,0 @@
-time_starting:22:00:49
-vul:B
-vul:S
-vul:T
-dbs:public
-table:tracking
-table:users   
-time_ending:21:51:25
