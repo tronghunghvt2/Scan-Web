@@ -383,7 +383,7 @@ def main():
 
 	try:
 		disable_warnings(InsecureRequestWarning)
-		API_GET = "/api/Scan"
+		API_GET = "/api/Scan/2"
 		URL_GET = HOST + PORT + API_GET
 		response = requests.get(url = URL_GET, verify = False)
 		sqlmap = response.json()
