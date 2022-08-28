@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\New folder\\Scan-Web\\back-end\\WebScan\\WebScan\\WebScan.csproj": {}
+    "C:\\Users\\ADMIN\\Desktop\\Scan-Web\\back-end\\WebScan\\WebScan\\WebScan.csproj": {}
   },
   "projects": {
-    "D:\\New folder\\Scan-Web\\back-end\\WebScan\\WebScan\\WebScan.csproj": {
+    "C:\\Users\\ADMIN\\Desktop\\Scan-Web\\back-end\\WebScan\\WebScan\\WebScan.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\New folder\\Scan-Web\\back-end\\WebScan\\WebScan\\WebScan.csproj",
+        "projectUniqueName": "C:\\Users\\ADMIN\\Desktop\\Scan-Web\\back-end\\WebScan\\WebScan\\WebScan.csproj",
         "projectName": "WebScan",
-        "projectPath": "D:\\New folder\\Scan-Web\\back-end\\WebScan\\WebScan\\WebScan.csproj",
+        "projectPath": "C:\\Users\\ADMIN\\Desktop\\Scan-Web\\back-end\\WebScan\\WebScan\\WebScan.csproj",
         "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "D:\\New folder\\Scan-Web\\back-end\\WebScan\\WebScan\\obj\\",
+        "outputPath": "C:\\Users\\ADMIN\\Desktop\\Scan-Web\\back-end\\WebScan\\WebScan\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
