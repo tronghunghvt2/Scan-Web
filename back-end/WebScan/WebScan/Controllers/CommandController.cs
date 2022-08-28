@@ -123,8 +123,8 @@ namespace WebScan.Controllers
 
         private async Task CallApiBot(Models.CommandScan commandScan)
         {
-            string urlApiNmapBot = "http://192.168.56.128:8085/Scan/1,";
-            string urlApiSqlmapBot = "http://192.168.56.128:8085/Scan/2,";
+            string urlApiNmapBot = "http://192.168.56.128:8085/Scan/";
+            string urlApiSqlmapBot = "http://192.168.56.128:8085/Scan/";
 
             if (commandScan.idType == 1)
             {
