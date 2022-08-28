@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admin\\Downloads\\Scan-Web-master\\back-end\\WebScan\\WebScan\\WebScan.csproj": {}
+    "D:\\New folder\\Scan-Web\\back-end\\WebScan\\WebScan\\WebScan.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admin\\Downloads\\Scan-Web-master\\back-end\\WebScan\\WebScan\\WebScan.csproj": {
+    "D:\\New folder\\Scan-Web\\back-end\\WebScan\\WebScan\\WebScan.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\Downloads\\Scan-Web-master\\back-end\\WebScan\\WebScan\\WebScan.csproj",
+        "projectUniqueName": "D:\\New folder\\Scan-Web\\back-end\\WebScan\\WebScan\\WebScan.csproj",
         "projectName": "WebScan",
-        "projectPath": "C:\\Users\\Admin\\Downloads\\Scan-Web-master\\back-end\\WebScan\\WebScan\\WebScan.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\Downloads\\Scan-Web-master\\back-end\\WebScan\\WebScan\\obj\\",
+        "projectPath": "D:\\New folder\\Scan-Web\\back-end\\WebScan\\WebScan\\WebScan.csproj",
+        "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
+        "outputPath": "D:\\New folder\\Scan-Web\\back-end\\WebScan\\WebScan\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -59,7 +59,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -71,7 +72,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

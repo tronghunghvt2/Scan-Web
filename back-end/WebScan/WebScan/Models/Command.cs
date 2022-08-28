@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebScan.Models
 {
@@ -11,5 +12,10 @@ namespace WebScan.Models
         [Required]
         public string value { get; set; }
         
+    }
+
+    public class CommandScan : Command
+    {
+        public Guid idScan { get; set; }
     }
 }

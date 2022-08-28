@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,10 +8,9 @@ namespace WebScan.Data
     [Table("sqlmapScan")]
     public class SqlmapScan
     {
-        internal int idType;
 
         [Key]
-        public long idSqlmapScan { get; set; }
+        public Guid idSqlmapScan { get; set; }
         [Required]
         public string value { get; set; }
         public string message { get; set; }

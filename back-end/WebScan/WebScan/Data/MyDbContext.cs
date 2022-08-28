@@ -15,7 +15,9 @@ namespace WebScan.Data
         public DbSet<Database> Databases { get; set; }
         public DbSet<Table> Tables { get; set; }
         public DbSet<Dump> Dumps { get; set; }
-
+        public DbSet<Port> Ports { get; set; }
+        public DbSet<State> states { get; set; }
+        public DbSet<Service> services { get; set; }
         #endregion
 
     }

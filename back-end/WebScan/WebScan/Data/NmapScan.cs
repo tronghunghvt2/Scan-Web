@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,7 +9,7 @@ namespace WebScan.Data
     public class NmapScan
     {
         [Key]
-        public long idNmapScan { get; set; }
+        public Guid idNmapScan { get; set; }
         [Required]
         public string ipAddress { get; set; }
         public string timeStart { get; set; }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using WebScan.Data;
 using WebScan.Models;
@@ -18,67 +19,47 @@ namespace WebScan.Controllers
         {
             _context = context;
         }
-        [HttpGet]
-        public IActionResult GetAll()
+
+        [HttpGet("{idType},{idScan}")]
+        public IActionResult GetById(long idType, Guid idScan)
         {
             try
             {
-                var dsResult1 = _context.SqlmapScans.ToList();
-                if (dsResult1 == null )
+                if (idType == 1) {
+                    var Result = _context.NmapScans.SingleOrDefault(rs => rs.idNmapScan == idScan);
+                    if (Result != null)
+                    {
+                        return Ok(Result);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                else if(idType == 2)
                 {
-                    return NotFound();
+                    var Result = _context.SqlmapScans.SingleOrDefault(rs => rs.idSqlmapScan == idScan);
+                    if(Result != null)
+                    {
+                        return Ok(Result);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
                 }
                 else
                 {
-                    return Ok(dsResult1);
-                }
-
-            }
-            catch
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpGet("{idTypeScan}")]
-        public IActionResult GetById (int idTypeScan)
-        {
-            try
-            {
-                var dsResult1 = _context.SqlmapScans.SingleOrDefault(Result => Result.idSqlmapScan == idTypeScan);
-                if (dsResult1 != null)
-                {
-                    return Ok(dsResult1);
-                }
-                else
-                {
-                    return NotFound();
+                    return BadRequest();
                 }
             }
             catch
             {
                 return BadRequest();
             }
+            
         }
 
-        [HttpDelete("{idTypeScan}")]
-        public IActionResult Remove(int idTypeScan)
-        {
-            try
-            {
-                var dsResult1 = _context.SqlmapScans.SingleOrDefault(Result => Result.idSqlmapScan == idTypeScan);
-                if (dsResult1 == null)
-                {
-                    return NotFound();
-                }
-                _context.SqlmapScans.Remove(dsResult1);
 
-                return Ok();
-            }
-            catch
-            {
-                return BadRequest();
-            }
-        }
     }
 }

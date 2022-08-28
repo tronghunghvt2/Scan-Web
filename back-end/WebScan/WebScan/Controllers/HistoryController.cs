@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using WebScan.Data;
 using WebScan.Models;
@@ -28,14 +29,16 @@ namespace WebScan.Controllers
                     value = sm.value,
                     typeScan = "Sql Scan",
                     idScan = sm.idSqlmapScan,
-                    idType = 2
+                    idType = 2,
+                    idCommand = sm.idCommand
                 }).ToList();
                 var listNmapScan = _context.NmapScans.Select(nm => new History
                 {
                     value = nm.ipAddress,
                     typeScan = "Nmap Scan",
                     idScan = nm.idNmapScan,
-                    idType = 1
+                    idType = 1,
+                    idCommand = nm.idCommand
                 }).ToList();
 
                 var unionList = listSqlmapScan.Union(listNmapScan).Skip((pageIndex-1)*10).Take(10).ToList();
@@ -56,7 +59,7 @@ namespace WebScan.Controllers
         }
 
         [HttpGet("{idScan},{idType}")]
-        public IActionResult GetById(long idScan, long idType)
+        public IActionResult GetById(Guid idScan, long idType)
         {
             try
             {
@@ -64,12 +67,64 @@ namespace WebScan.Controllers
                 if(idType == 1)
                 {
                     //var HistoryNmap = new HistoryNmap;
-                    var nmap = _context.NmapScans.SingleOrDefault(ns => ns.idNmapScan == idScan);
+                    var listnmap = _context.NmapScans.ToList();
+                    var listPort = _context.Ports.ToList();
+                    var listState = _context.states.ToList();
+                    var listService = _context.services.ToList();
+
+                    var list = from a in listnmap
+                               join b in listPort on a.idNmapScan equals b.idNmapScan
+                               join c in listState on b.idState equals c.idState
+                               join d in listService on b.idService equals d.idService
+                               select new HistoryNmap
+                               {
+                                   idScan = a.idNmapScan,
+                                   typeScan = "Nmap Scan",
+                                   value = a.ipAddress,
+                                   timeStart = a.timeStart,
+                                   location = a.location,
+                                   coordinates = a.coordinates,
+                                   port = (Port)a.Ports,
+                                   state = (State)b.State,
+                                   service = (Service)b.Service
+                               };
+                    var list_s = list.ToList();
+                    var nmap = list_s.SingleOrDefault(sm => sm.idScan == idScan);
+                    if (nmap == null)
+                    {
+                        NotFound();
+                    }
                     return Ok(nmap);
                 }
                 else if(idType == 2)
                 {
-                    var sqlmap = _context.SqlmapScans.SingleOrDefault(sm => sm.idSqlmapScan == idScan);
+                    var listVul = _context.Vulnerabilities.ToList();
+                    var listSqlmap = _context.SqlmapScans.ToList();
+
+                    var listDb = _context.Databases.ToList();
+                    var listTable = _context.Tables.ToList();
+                    var listDump = _context.Dumps.ToList();
+
+                    var list = from a in listSqlmap
+                               join b in listVul on a.idSqlmapScan equals b.idSqlmapScan
+                               join c in listDb on a.idSqlmapScan equals c.idSqlmapScan
+                               join d in listTable on c.idDb equals d.idDb
+                               join e in listDump on d.idTable equals e.idTable
+                               select new HistorySqlmap
+                               {
+                                   idScan = a.idSqlmapScan,
+                                   typeScan = "Sqlmap Scan",
+                                   value = a.value,
+                                   message = a.message,
+                                   timeStart = a.timeStart,
+                                   timeEnd = a.timeEnd,
+                                   vulnerability = (Vulnerability)a.Vulnerabilities,
+                                   database = (Database)a.Databases,
+                                   table = (Table)c.Tables,
+                                   dump = (Dump)d.Dumps
+                               };
+                    var list_s = list.ToList();
+                    var sqlmap = list_s.SingleOrDefault(sm => sm.idScan == idScan);
                     return Ok(sqlmap);
                 }
                 else

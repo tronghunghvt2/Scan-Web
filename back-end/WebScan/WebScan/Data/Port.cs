@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebScan.Data
@@ -7,11 +8,11 @@ namespace WebScan.Data
     public class Port
     {
         [Key]
-        public long idPort { get; set; }
+        public Guid idPort { get; set; }
         public string value { get; set; }
 
 
-        public long idNmapScan { get; set; }
+        public Guid? idNmapScan { get; set; }
         [ForeignKey("idNmapScan")]
         public NmapScan NmapScan { get; set; }
 
